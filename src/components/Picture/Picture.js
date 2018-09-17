@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./Picutre.css";
+import "./Picture.css";
 
 export default class Picture extends Component {
   constructor(props) {
@@ -7,6 +7,8 @@ export default class Picture extends Component {
 
     this.handleGetDog = this.handleGetDog.bind(this);
     this.handleGetCat = this.handleGetCat.bind(this);
+
+    this.handleGetDog();
   }
 
   state = {};
@@ -37,18 +39,18 @@ export default class Picture extends Component {
   }
 
   handleGetDog() {
+    Picture;
     this.makeRequest("dog");
   }
 
   handleGetCat() {
-    // const headers = new Headers();
-    // headers.append("Authorization", `Bearer ${token}`);
+    const headers = new Headers();
+    headers.append("Authorization", `Bearer ${this.props.token}`);
 
-    this.makeRequest("cat");
+    this.makeRequest("cat", "GET", headers);
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className="picture_container">
         <button onClick={this.handleGetDog} className="button picture_button">
@@ -66,6 +68,10 @@ export default class Picture extends Component {
         {this.state.picture && (
           <img src={this.state.picture} className="picture_image" />
         )}
+
+        <button onClick={this.props.onLogout} className="button">
+          Logout
+        </button>
       </div>
     );
   }
