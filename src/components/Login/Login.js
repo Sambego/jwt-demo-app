@@ -26,9 +26,9 @@ export default class Login extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit} className="form">
-        {this.state.error && (
+        {this.props.error && (
           <pre className="error">
-            {this.state.error.status}: {this.state.error.statusText}
+            {this.props.error.status}: {this.props.error.statusText}
           </pre>
         )}
         <label htmlFor="username" className="label">

@@ -69,7 +69,7 @@ export default class App extends Component {
         {this.state.token ? (
           <Picture token={this.state.token} onLogout={this.handleLogout} />
         ) : (
-          <Login onLogin={this.handleLogin} />
+          <Login onLogin={this.handleLogin} error={this.state.error} />
         )}
       </div>
     );
