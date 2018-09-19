@@ -12,9 +12,7 @@ export default class App extends Component {
     this.handleLogout = this.handleLogout.bind(this);
   }
 
-  state = {
-    token: window.localStorage.getItem("token")
-  };
+  state = {};
 
   handleLogin(username, password) {
     const headers = new Headers();
@@ -38,7 +36,6 @@ export default class App extends Component {
         return Promise.reject(response);
       })
       .then(response => {
-        window.localStorage.setItem("token", response);
         this.setState(state => ({
           ...state,
           token: response,
@@ -56,7 +53,6 @@ export default class App extends Component {
 
   handleLogout() {
     this.setState(state => ({ ...state, token: undefined }));
-    window.localStorage.removeItem("token");
   }
 
   render() {
