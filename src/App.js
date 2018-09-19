@@ -41,6 +41,7 @@ export default class App extends Component {
           token: response,
           error: undefined
         }));
+        console.log("JWT:", response);
       })
       .catch(error =>
         this.setState(state => ({
