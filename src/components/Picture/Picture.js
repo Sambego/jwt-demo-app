@@ -57,7 +57,7 @@ export default class Picture extends Component {
         </ButtonGroup>
 
         {this.state.error && (
-          <div style={{ margin: "24px 0" }}>
+          <div style={{ margin: "24px 0 0" }}>
             <Alert type="danger" title="Oops!" dismissible>
               {this.state.error.message}
             </Alert>
@@ -70,7 +70,7 @@ export default class Picture extends Component {
             style={{
               width: "100%",
               maxWidth: "100%",
-              marginTop: "48px"
+              marginTop: "24px"
             }}
           />
         )}
