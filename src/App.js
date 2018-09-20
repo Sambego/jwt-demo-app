@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import Login from "./components/Login/Login.js";
-import Picture from "./components/Picture/Picture.js";
-
-import "./App.css";
+import { Logo } from "@auth0/cosmos";
+import { Authenticate } from "./requests";
+import { Nav, Login, Picture } from "./components";
 
 export default class App extends Component {
   constructor(props) {
@@ -15,33 +14,15 @@ export default class App extends Component {
   state = {};
 
   handleLogin(username, password) {
-    const headers = new Headers();
-    headers.append("content-type", "application/json");
-
-    const request = new Request("http://localhost:3000/api/authenticate", {
-      headers,
-      method: "POST",
-      body: JSON.stringify({
-        username,
-        password
-      })
-    });
-
-    return fetch(request)
+    Authenticate(username, password)
       .then(response => {
-        if (response && response.status === 200) {
-          return response.text();
-        }
+        console.log("JWT:", response.jwt);
 
-        return Promise.reject(response);
-      })
-      .then(response => {
-        this.setState(state => ({
+        return this.setState(state => ({
           ...state,
-          token: response,
+          jwt: response.jwt,
           error: undefined
         }));
-        console.log("JWT:", response);
       })
       .catch(error =>
         this.setState(state => ({
@@ -53,18 +34,20 @@ export default class App extends Component {
   }
 
   handleLogout() {
-    this.setState(state => ({ ...state, token: undefined }));
+    this.setState(state => ({ ...state, error: undefined, jwt: undefined }));
   }
 
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Cats & dogs</h1>
-        </header>
+        <Nav
+          title="Cats and dogs"
+          isLoggedIn={!!this.state.jwt}
+          onLogout={this.handleLogout}
+        />
 
-        {this.state.token ? (
-          <Picture token={this.state.token} onLogout={this.handleLogout} />
+        {this.state.jwt ? (
+          <Picture jwt={this.state.jwt} />
         ) : (
           <Login onLogin={this.handleLogin} error={this.state.error} />
         )}

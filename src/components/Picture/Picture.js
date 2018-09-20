@@ -1,78 +1,80 @@
 import React, { Component } from "react";
-import "./Picture.css";
+import PropTypes from "prop-types";
+import { Alert, ButtonGroup, Button, EmptyState } from "@auth0/cosmos";
+import { FetchImage } from "../../requests";
+import { Container } from "../";
 
 export default class Picture extends Component {
+  static propTypes = {
+    jwt: PropTypes.string.isRequired
+  };
+
   constructor(props) {
     super(props);
 
-    this.handleGetDog = this.handleGetDog.bind(this);
-    this.handleGetCat = this.handleGetCat.bind(this);
+    this.handleLoadDog = this.handleLoadDog.bind(this);
+    this.handleLoadCat = this.handleLoadCat.bind(this);
 
-    this.handleGetDog();
+    this.handleLoadDog();
   }
 
   state = {};
 
-  makeRequest(endpoint, method = "GET", headers = new Headers()) {
-    const request = new Request(`http://localhost:3000/api/${endpoint}`);
-
-    return fetch(request, {
-      method,
-      headers
-    })
-      .then(response => {
-        if (response.status === 200) {
-          return response.json();
-        }
-
-        return Promise.reject(response);
-      })
+  handleLoadDog() {
+    FetchImage("dog")
       .then(response =>
-        this.setState(state => ({
-          picture: response.url,
-          error: undefined
-        }))
+        this.setState(state => ({ ...state, picture: response.url }))
       )
-      .catch(error =>
-        this.setState(state => ({ picture: undefined, error: error }))
-      );
+      .catch(error => this.setState(state => ({ ...state, error: error })));
   }
 
-  handleGetDog() {
-    Picture;
-    this.makeRequest("dog");
-  }
-
-  handleGetCat() {
-    const headers = new Headers();
-    headers.append("Authorization", `Bearer ${this.props.token}`);
-
-    this.makeRequest("cat", "GET", headers);
+  handleLoadCat() {
+    FetchImage("cat", this.props.jwt)
+      .then(response =>
+        this.setState(state => ({ ...state, picture: response.url }))
+      )
+      .catch(error => this.setState(state => ({ ...state, error: error })));
   }
 
   render() {
     return (
-      <div className="picture_container">
-        <button onClick={this.handleGetDog} className="button picture_button">
-          Get dog picture
-        </button>
-        <button onClick={this.handleGetCat} className="button picture_button">
-          Get cat picture (protected)
-        </button>
+      <Container>
+        <ButtonGroup align="left">
+          <Button
+            size="default"
+            appearance="default"
+            onClick={this.handleLoadDog}
+          >
+            Show me a dog
+          </Button>
+          <Button
+            size="default"
+            appearance="default"
+            onClick={this.handleLoadCat}
+          >
+            Show me a cat
+          </Button>
+        </ButtonGroup>
 
         {this.state.error && (
-          <pre className="error">
-            {this.state.error.status}: {this.state.error.statusText}
-          </pre>
-        )}
-        {this.state.picture && (
-          <img src={this.state.picture} className="picture_image" />
+          <div style={{ margin: "24px 0" }}>
+            <Alert type="danger" title="Oops!" dismissible>
+              {this.state.error.message}
+            </Alert>
+          </div>
         )}
 
-        <button onClick={this.props.onLogout} className="button">
-          Logout
-        </button>
-      </div>
+        {this.state.picture && (
+          <img
+            src={this.state.picture}
+            style={{
+              width: "100%",
+              maxWidth: "100%",
+              marginTop: "48px"
+            }}
+          />
+        )}
+      </Container>
     );
   }
 }
