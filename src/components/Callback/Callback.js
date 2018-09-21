@@ -4,10 +4,8 @@ import { Spinner } from "@auth0/cosmos";
 
 export default class Callback extends Component {
   componentWillUpdate(nextProps) {
-    if (nextProps.auth && nextProps.auth.id_token) {
+    if ((nextProps.auth && nextProps.auth.id_token) || nextProps.error) {
       this.props.history.push("/");
-    } else {
-      this.props.history.push("/login");
     }
   }
 

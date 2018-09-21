@@ -13,23 +13,8 @@ const AUTH0_CONFIG = {
 export default class Authentication {
   auth0 = new auth0.WebAuth({ ...AUTH0_CONFIG });
 
-  login(username, password) {
-    return new Promise((resolve, reject) => {
-      this.auth0.login(
-        {
-          realm: "cats-and-dogs",
-          username,
-          password
-        },
-        error => {
-          if (error) {
-            reject(error);
-          }
-
-          resolve();
-        }
-      );
-    });
+  login() {
+    this.auth0.authorize();
   }
 
   handleAuthentication() {

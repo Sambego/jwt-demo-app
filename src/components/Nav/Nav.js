@@ -3,7 +3,15 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { Button, Logo } from "@auth0/cosmos";
 
-const Nav = ({ title, isLoggedIn, onLogout, history, username, picture }) => {
+const Nav = ({
+  title,
+  isLoggedIn,
+  onLogin,
+  onLogout,
+  history,
+  username,
+  picture
+}) => {
   const styles = {
     nav: {
       height: "80px",
@@ -35,10 +43,6 @@ const Nav = ({ title, isLoggedIn, onLogout, history, username, picture }) => {
     }
   };
 
-  const handleLogin = () => {
-    history.push("/login");
-  };
-
   return (
     <nav style={styles.nav}>
       <div style={styles.container}>
@@ -46,7 +50,7 @@ const Nav = ({ title, isLoggedIn, onLogout, history, username, picture }) => {
         <h1 style={styles.title}>{title}</h1>
       </div>
       {!isLoggedIn && (
-        <Button size="default" appearance="cta" onClick={handleLogin}>
+        <Button size="default" appearance="cta" onClick={onLogin}>
           Log in
         </Button>
       )}
@@ -80,6 +84,7 @@ const Nav = ({ title, isLoggedIn, onLogout, history, username, picture }) => {
 Nav.propTypes = {
   title: PropTypes.string.isRequired,
   isLoggedIn: PropTypes.bool,
+  onLogin: PropTypes.func.isRequired,
   onLogout: PropTypes.func.isRequired
 };
 

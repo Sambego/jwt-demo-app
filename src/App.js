@@ -32,14 +32,8 @@ export default class App extends Component {
       .finally(() => this.setState(state => ({ ...state, loading: false })));
   }
 
-  handleLogin(username, password) {
-    this.authentication.login(username, password).catch(error => {
-      this.setState(state => ({
-        ...state,
-        auth: undefined,
-        error: error
-      }));
-    });
+  handleLogin() {
+    this.authentication.login();
   }
 
   handleLogout() {
@@ -83,6 +77,7 @@ export default class App extends Component {
           <Nav
             title="Cats and dogs"
             isLoggedIn={this.authentication.isAuthenticated(this.state.auth)}
+            onLogin={this.handleLogin}
             onLogout={this.handleLogout}
             username={this.state.auth && this.state.auth.username}
             picture={this.state.auth && this.state.auth.picture}
@@ -92,16 +87,6 @@ export default class App extends Component {
             exact
             path="/"
             render={props => <Picture auth={this.state.auth} {...props} />}
-          />
-          <Route
-            path="/login"
-            render={props => (
-              <Login
-                onLogin={this.handleLogin}
-                error={this.state.error}
-                {...props}
-              />
-            )}
           />
           <Route
             path="/callback"
