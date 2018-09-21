@@ -6,7 +6,7 @@ const AUTH0_CONFIG = {
   clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
   redirectUri: process.env.REACT_APP_AUTH0_REDIRECT_URI,
   responseType: "token id_token",
-  scope: "openid"
+  scope: "openid profile"
 };
 
 export default class Authentication {
@@ -71,6 +71,7 @@ export default class Authentication {
       access_token: authResult.accessToken,
       id_token: authResult.idToken,
       expires_at: expiresAt,
+      username: authResult.idTokenPayload.nickname,
       scopes
     };
   }

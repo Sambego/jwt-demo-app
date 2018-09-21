@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Logo } from "@auth0/cosmos";
+import { Logo, Spinner } from "@auth0/cosmos";
 import { Authentication } from "./requests";
 import { Nav, Login, Picture, Callback } from "./components";
 
@@ -13,8 +13,24 @@ export default class App extends Component {
     this.handleAuthentication = this.handleAuthentication.bind(this);
   }
 
-  state = {};
+  state = {
+    loading: true
+  };
+
   authentication = new Authentication();
+
+  componentDidMount() {
+    this.authentication
+      .checkSession()
+      .then(auth => {
+        this.setState(state => ({
+          ...state,
+          auth,
+          error: undefined
+        }));
+      })
+      .finally(() => this.setState(state => ({ ...state, loading: false })));
+  }
 
   handleLogin(username, password) {
     this.authentication.login(username, password).catch(error => {
@@ -53,6 +69,14 @@ export default class App extends Component {
   }
 
   render() {
+    if (this.state.isLoading) {
+      return (
+        <div style={{ textAlign: "center", padding: "48px" }}>
+          <Spinner />
+        </div>
+      );
+    }
+
     return (
       <Router>
         <div className="App">
@@ -60,6 +84,7 @@ export default class App extends Component {
             title="Cats and dogs"
             isLoggedIn={this.authentication.isAuthenticated(this.state.auth)}
             onLogout={this.handleLogout}
+            username={this.state.auth && this.state.auth.username}
           />
 
           <Route
