@@ -34,7 +34,7 @@ export default class Picture extends Component {
   }
 
   handleLoadCat() {
-    const jwt = this.props.auth ? this.props.auth.id_token : undefined;
+    const jwt = this.props.auth ? this.props.auth.access_token : undefined;
 
     FetchImage("cat", jwt)
       .then(response =>
