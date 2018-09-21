@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { Button, Logo } from "@auth0/cosmos";
 
-const Nav = ({ title, isLoggedIn, onLogout, history, username }) => {
+const Nav = ({ title, isLoggedIn, onLogout, history, username, picture }) => {
   const styles = {
     nav: {
       height: "80px",
@@ -24,6 +24,14 @@ const Nav = ({ title, isLoggedIn, onLogout, history, username }) => {
       color: "#F1F1F1",
       fontWeight: 700,
       letterSpacing: "1.4px"
+    },
+    avatar: {
+      overflow: "hidden",
+      display: "inline-block",
+      margin: "0 12px",
+      width: "28px",
+      height: "28px",
+      borderRadius: "50%"
     }
   };
 
@@ -45,8 +53,19 @@ const Nav = ({ title, isLoggedIn, onLogout, history, username }) => {
       {isLoggedIn && (
         <div style={styles.container}>
           {username && (
-            <span style={{ paddingRight: "28px", color: "#fff" }}>
-              Welcome <strong>{username}</strong>
+            <span
+              style={{
+                ...styles.container,
+                paddingRight: "28px",
+                color: "#fff"
+              }}
+            >
+              {picture && (
+                <span style={styles.avatar}>
+                  <img src={picture} style={{ width: "100%" }} />
+                </span>
+              )}
+              <strong>{username}</strong>
             </span>
           )}
           <Button size="default" appearance="cta" onClick={onLogout}>

@@ -85,6 +85,7 @@ export default class App extends Component {
             isLoggedIn={this.authentication.isAuthenticated(this.state.auth)}
             onLogout={this.handleLogout}
             username={this.state.auth && this.state.auth.username}
+            picture={this.state.auth && this.state.auth.picture}
           />
 
           <Route

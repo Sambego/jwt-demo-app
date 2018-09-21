@@ -73,6 +73,7 @@ export default class Authentication {
       id_token: authResult.idToken,
       expires_at: expiresAt,
       username: authResult.idTokenPayload.nickname,
+      picture: authResult.idTokenPayload.picture,
       scopes
     };
   }
