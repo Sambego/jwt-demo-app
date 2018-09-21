@@ -1,4 +1,4 @@
-import Authenticate from "./Authenticate";
+import Authentication from "./Authentication";
 import FetchImage from "./FetchImage";
 
-export { Authenticate, FetchImage };
+export { Authentication, FetchImage };

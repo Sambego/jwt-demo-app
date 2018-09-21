@@ -6,7 +6,12 @@ import { Container } from "../";
 
 export default class Picture extends Component {
   static propTypes = {
-    jwt: PropTypes.string.isRequired
+    auth: PropTypes.shape({
+      access_token: PropTypes.string.isRequired,
+      id_token: PropTypes.string.isRequired,
+      expires_at: PropTypes.string.isRequired,
+      scopes: PropTypes.string.isRequired
+    })
   };
 
   constructor(props) {
@@ -29,7 +34,9 @@ export default class Picture extends Component {
   }
 
   handleLoadCat() {
-    FetchImage("cat", this.props.jwt)
+    const jwt = this.props.auth ? this.props.auth.id_token : undefined;
+
+    FetchImage("cat", jwt)
       .then(response =>
         this.setState(state => ({ ...state, picture: response.url }))
       )

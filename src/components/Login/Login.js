@@ -38,7 +38,7 @@ export default class Login extends Component {
         {this.props.error && (
           <div style={{ marginBottom: "24px" }}>
             <Alert type="danger" title="Oops!" dismissible>
-              {this.props.error.message}
+              {this.props.error.description}
             </Alert>
           </div>
         )}

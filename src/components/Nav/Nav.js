@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 import { Button, Logo } from "@auth0/cosmos";
 
-const Nav = ({ title, isLoggedIn, onLogout }) => {
+const Nav = ({ title, isLoggedIn, onLogout, history }) => {
   const styles = {
     nav: {
       height: "80px",
@@ -26,12 +27,21 @@ const Nav = ({ title, isLoggedIn, onLogout }) => {
     }
   };
 
+  const handleLogin = () => {
+    history.push("/login");
+  };
+
   return (
     <nav style={styles.nav}>
       <div style={styles.container}>
         <Logo />
         <h1 style={styles.title}>{title}</h1>
       </div>
+      {!isLoggedIn && (
+        <Button size="default" appearance="cta" onClick={handleLogin}>
+          Log in
+        </Button>
+      )}
       {isLoggedIn && (
         <Button size="default" appearance="cta" onClick={onLogout}>
           Log out
@@ -51,4 +61,4 @@ Nav.defaultProps = {
   isLoggedIn: false
 };
 
-export default Nav;
+export default withRouter(Nav);
